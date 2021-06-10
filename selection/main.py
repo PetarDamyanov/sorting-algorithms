@@ -33,7 +33,7 @@ rising = True  # change rising or falling of sorting
 arr = list()
 for i in range(int(lenght_of_arr)):
     top = random.randint(padding_height * 2, display_height - padding_height * 2)
-    arr.append(pygame.Rect(((i + 1) * block_width), top, block_width, display_height - padding_height - top))
+    arr.append(pygame.Rect((i * block_width) + padding_width, top, block_width, display_height - padding_height - top))
 # ========================================================================
 
 pygame.init()
