@@ -19,11 +19,11 @@ pink = (255, 192, 203)
 # ===========================================================================
 display_color = black
 block_color = blue
-display_width = 600
+display_width = 1000
 display_height = 300
-block_width = 10
+block_width = 5
 padding_height = 10  # distance between block and and window in height
-padding_width = 10  # distance between block and and window in width
+padding_width = 0  # distance between block and and window in width
 lenght_of_arr = (display_width - padding_width - padding_width) / block_width
 rising = True  # change rising or falling of sorting
 # ===========================================================================
@@ -37,9 +37,53 @@ for i in range(int(lenght_of_arr)):
 # ========================================================================
 
 pygame.init()
-pygame.display.set_caption('Bubble sort')
+pygame.display.set_caption('Quick sort')
 DISPLAY = pygame.display.set_mode((display_width, display_height))
 FPS_CLOCK = pygame.time.Clock()
+
+
+def partition(start, end, array):
+    pivot_index = start
+    pivot = array[pivot_index][1]
+
+    while start < end:
+
+        while start < len(array) and array[start][1] <= pivot:
+            start += 1
+
+        while array[end][1] > pivot:
+            end -= 1
+
+        if(start < end):
+            array[start][0], array[end][0] = array[end][0], array[start][0]
+            array[start], array[end] = array[end], array[start]
+            DISPLAY.fill(display_color)
+            for block in range(len(arr)):
+                pygame.draw.rect(DISPLAY, block_color, arr[block])
+
+            pygame.display.update()
+            FPS_CLOCK.tick(30)
+
+    array[end][0], array[pivot_index][0] = array[pivot_index][0], array[end][0]
+    array[end], array[pivot_index] = array[pivot_index], array[end]
+    DISPLAY.fill(display_color)
+    for block in range(len(arr)):
+        pygame.draw.rect(DISPLAY, block_color, arr[block])
+
+    pygame.display.update()
+    FPS_CLOCK.tick(30)
+
+    return end
+
+def quick(start, end, array):
+
+    if (start < end):
+
+        p = partition(start, end, array)
+
+        quick(start, p - 1, array)
+        quick(p + 1, end, array)
+
 
 def main():
 
@@ -61,24 +105,7 @@ def main():
 
 # soriting algorithm
 # ====================================================================================
-        n = len(arr)
-        for i in range(n - 1):
-            for j in range(0, n - i - 1):
-                if rising:
-                    if arr[j][1] < arr[j + 1][1]:
-                        arr[j][0], arr[j + 1][0] = arr[j + 1][0], arr[j][0]
-                        arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                else:
-                    if arr[j][1] > arr[j + 1][1]:
-                        arr[j][0], arr[j + 1][0] = arr[j + 1][0], arr[j][0]
-                        arr[j], arr[j + 1] = arr[j + 1], arr[j]
-
-                DISPLAY.fill(display_color)
-                for block in range(len(arr)):
-                    pygame.draw.rect(DISPLAY, block_color, arr[block])
-
-                pygame.display.update()
-                FPS_CLOCK.tick(30)
+        quick(0, len(arr) - 1, arr)
 # ====================================================================================
 # keep in mind that the time is slower because of the drawing of blocks and clock tick of 30 miliseconds
 

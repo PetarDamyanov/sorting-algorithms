@@ -9,19 +9,15 @@ def merge(arr):
         i = j = k = 0
         while i < len(L) and j < len(R):
             if L[i] < R[j]:
-                arr[k][0], L[i][0] = L[i][0], arr[k][0]
-                # arr[k], L[i] = L[i], arr[k]
+                arr[k] = L[i]
                 i += 1
             else:
-                arr[k][0], R[j][0] = R[j][0], arr[k][0]
-                # arr[k], R[j] = R[j], arr[k]
+                arr[k] = R[j]
                 j += 1
             k += 1
         while i < len(L):
-            arr[k][0], L[i][0] = L[i][0], arr[k][0]
-            # arr[k], L[i] = L[i], arr[k]
+            arr[k] = L[i]
             i, k = i + 1, k + 1
         while j < len(R):
-            arr[k][0], R[j][0] = R[j][0], arr[k][0]
-            # arr[k], R[j] = R[j], arr[k]
+            arr[k] = R[j]
             j, k = j + 1, k + 1

@@ -19,11 +19,11 @@ pink = (255, 192, 203)
 # ===========================================================================
 display_color = black
 block_color = blue
-display_width = 600
+display_width = 300
 display_height = 300
-block_width = 10
+block_width = 30
 padding_height = 10  # distance between block and and window in height
-padding_width = 10  # distance between block and and window in width
+padding_width = 0  # distance between block and and window in width
 lenght_of_arr = (display_width - padding_width - padding_width) / block_width
 rising = True  # change rising or falling of sorting
 # ===========================================================================
@@ -37,9 +37,52 @@ for i in range(int(lenght_of_arr)):
 # ========================================================================
 
 pygame.init()
-pygame.display.set_caption('Bubble sort')
+pygame.display.set_caption('Merge sort')
 DISPLAY = pygame.display.set_mode((display_width, display_height))
 FPS_CLOCK = pygame.time.Clock()
+
+
+def merge(array):
+    if len(array) > 1:
+        R, L = array[len(array) // 2:], array[:len(array) // 2]
+
+        merge(R)
+        merge(L)
+
+        i = j = k = 0
+        while i < len(L) and j < len(R):
+            if L[i][1] < R[j][1]:
+                array[k][0], L[i][0] = L[i][0], array[k][0]
+                array[k], L[i] = L[i], array[k]
+                i += 1
+            else:
+                array[k][0], R[j][0] = R[j][0], array[k][0]
+                array[k], R[j] = R[j], array[k]
+                j += 1
+            k += 1
+
+            DISPLAY.fill(display_color)
+            for block in range(len(arr)):
+                pygame.draw.rect(DISPLAY, block_color, arr[block])
+
+            pygame.display.update()
+            FPS_CLOCK.tick(30)
+
+        while i < len(L):
+            array[k][0], L[i][0] = L[i][0], array[k][0]
+            array[k], L[i] = L[i], array[k]
+            i, k = i + 1, k + 1
+        while j < len(R):
+            array[k][0], R[j][0] = R[j][0], array[k][0]
+            array[k], R[j] = R[j], array[k]
+            j, k = j + 1, k + 1
+
+        DISPLAY.fill(display_color)
+        for block in range(len(arr)):
+            pygame.draw.rect(DISPLAY, block_color, arr[block])
+
+        pygame.display.update()
+        FPS_CLOCK.tick(30)
 
 def main():
 
@@ -61,24 +104,9 @@ def main():
 
 # soriting algorithm
 # ====================================================================================
-        n = len(arr)
-        for i in range(n - 1):
-            for j in range(0, n - i - 1):
-                if rising:
-                    if arr[j][1] < arr[j + 1][1]:
-                        arr[j][0], arr[j + 1][0] = arr[j + 1][0], arr[j][0]
-                        arr[j], arr[j + 1] = arr[j + 1], arr[j]
-                else:
-                    if arr[j][1] > arr[j + 1][1]:
-                        arr[j][0], arr[j + 1][0] = arr[j + 1][0], arr[j][0]
-                        arr[j], arr[j + 1] = arr[j + 1], arr[j]
-
-                DISPLAY.fill(display_color)
-                for block in range(len(arr)):
-                    pygame.draw.rect(DISPLAY, block_color, arr[block])
-
-                pygame.display.update()
-                FPS_CLOCK.tick(30)
+        merge(arr)
+        print(arr)
+        sys.exit()
 # ====================================================================================
 # keep in mind that the time is slower because of the drawing of blocks and clock tick of 30 miliseconds
 
